@@ -180,11 +180,32 @@ const summaryMovementValues = (accountInfo: AccountUser): void => {
   console.log('displayBalance', displayBalance(moneyInCount, moneyOutCount));
   labelBalance.textContent = `${displayBalance(moneyInCount, moneyOutCount)}€`;
 };
+// date fn
+function parseDate(dateString: string): Date | null {
+  const [day, month, year] = dateString.split("/").map(Number);
+  // Adjust month value since JavaScript Date object uses zero-based indexing for months
+  const adjustedMonth = month - 1;
+  // Create a new Date object using the provided day, month, and year values
+  const parsedDate = new Date(year, adjustedMonth, day);
+  // Check if the parsed date is valid
+  const isValidDate = !isNaN(parsedDate.getTime());
+  return isValidDate ? parsedDate : null;
+}
+
 
 const movementsDisplayFn = (accountInfo: AccountUser): void => {
   document.querySelector('.movements').textContent = ' ';
   const{movements:newMovementsArr}=accountInfo;
+  const dateStr = "3/7/2023";
+  const parsedDate = parseDate(dateStr);
   
+  const formattedDate = parsedDate.toLocaleDateString("en-GB");
+  if (parsedDate) {
+    console.log(formattedDate); // Output: 05/07/2023
+  } else {
+    console.log("Invalid date format.");
+  }
+
   if(accountInfo.sorted){
     newMovementsArr
     .sort((a, b) => a - b)
@@ -193,9 +214,9 @@ const movementsDisplayFn = (accountInfo: AccountUser): void => {
       const htmlWithdrawal = `
     <div class="movements__row">
 <div class="movements__type movements__type--${withdrawalOrDeposit}">
-1 withdrawal
+1 ${withdrawalOrDeposit}
 </div>
-<div class="movements__date">24/01/2037</div>
+<div class="movements__date">${formattedDate}</div>
 <div class="movements__value">${i}€</div>
 </div>`;
 document
@@ -210,9 +231,9 @@ document
       const htmlWithdrawal = `
     <div class="movements__row">
 <div class="movements__type movements__type--${withdrawalOrDeposit}">
-1 withdrawal
+1 ${withdrawalOrDeposit}
 </div>
-<div class="movements__date">24/01/2037</div>
+<div class="movements__date">${formattedDate}</div>
 <div class="movements__value">${i}€</div>
 </div>`;
 document

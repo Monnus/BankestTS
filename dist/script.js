@@ -127,15 +127,35 @@ var summaryMovementValues = function (accountInfo) {
     console.log('displayBalance', displayBalance(moneyInCount, moneyOutCount));
     labelBalance.textContent = "".concat(displayBalance(moneyInCount, moneyOutCount), "\u20AC");
 };
+// date fn
+function parseDate(dateString) {
+    var _a = dateString.split("/").map(Number), day = _a[0], month = _a[1], year = _a[2];
+    // Adjust month value since JavaScript Date object uses zero-based indexing for months
+    var adjustedMonth = month - 1;
+    // Create a new Date object using the provided day, month, and year values
+    var parsedDate = new Date(year, adjustedMonth, day);
+    // Check if the parsed date is valid
+    var isValidDate = !isNaN(parsedDate.getTime());
+    return isValidDate ? parsedDate : null;
+}
 var movementsDisplayFn = function (accountInfo) {
     document.querySelector('.movements').textContent = ' ';
     var newMovementsArr = accountInfo.movements;
+    var dateStr = "3/7/2023";
+    var parsedDate = parseDate(dateStr);
+    var formattedDate = parsedDate.toLocaleDateString("en-GB");
+    if (parsedDate) {
+        console.log(formattedDate); // Output: 05/07/2023
+    }
+    else {
+        console.log("Invalid date format.");
+    }
     if (accountInfo.sorted) {
         newMovementsArr
             .sort(function (a, b) { return a - b; })
             .forEach(function (i) {
             var withdrawalOrDeposit = i > 0 ? 'deposit' : 'withdrawal';
-            var htmlWithdrawal = "\n    <div class=\"movements__row\">\n<div class=\"movements__type movements__type--".concat(withdrawalOrDeposit, "\">\n1 withdrawal\n</div>\n<div class=\"movements__date\">24/01/2037</div>\n<div class=\"movements__value\">").concat(i, "\u20AC</div>\n</div>");
+            var htmlWithdrawal = "\n    <div class=\"movements__row\">\n<div class=\"movements__type movements__type--".concat(withdrawalOrDeposit, "\">\n1 ").concat(withdrawalOrDeposit, "\n</div>\n<div class=\"movements__date\">").concat(formattedDate, "</div>\n<div class=\"movements__value\">").concat(i, "\u20AC</div>\n</div>");
             document
                 .querySelector('.movements')
                 .insertAdjacentHTML('afterbegin', htmlWithdrawal);
@@ -146,7 +166,7 @@ var movementsDisplayFn = function (accountInfo) {
             .sort(function (a, b) { return a - b; }).reverse()
             .forEach(function (i) {
             var withdrawalOrDeposit = i > 0 ? 'deposit' : 'withdrawal';
-            var htmlWithdrawal = "\n    <div class=\"movements__row\">\n<div class=\"movements__type movements__type--".concat(withdrawalOrDeposit, "\">\n1 withdrawal\n</div>\n<div class=\"movements__date\">24/01/2037</div>\n<div class=\"movements__value\">").concat(i, "\u20AC</div>\n</div>");
+            var htmlWithdrawal = "\n    <div class=\"movements__row\">\n<div class=\"movements__type movements__type--".concat(withdrawalOrDeposit, "\">\n1 ").concat(withdrawalOrDeposit, "\n</div>\n<div class=\"movements__date\">").concat(formattedDate, "</div>\n<div class=\"movements__value\">").concat(i, "\u20AC</div>\n</div>");
             document
                 .querySelector('.movements')
                 .insertAdjacentHTML('afterbegin', htmlWithdrawal);
