@@ -98,6 +98,7 @@ const labelSumInterest = document.querySelector(
 const labelTimer = document.querySelector('.timer') as HTMLSpanElement;
 
 const containerApp = document.querySelector('.app') as HTMLDivElement;
+const helperIntroBoxTXT= document.querySelector(".intro-box") as HTMLAnchorElement;
 const containerMovements = document.querySelector(
   '.movements'
 ) as HTMLDivElement;
@@ -155,6 +156,23 @@ const movements: number[] = [200, 450, -400, 3000, -650, -130, 70, 1300];
 // display functions
 let balanceTotal: number = 0;
 let countdownTimer: ReturnType<typeof setTimeout>;
+
+// Function to move child (intro-box) above the parent (app) when opacity is 0
+function moveIntroBox(parentElement:HTMLElement, childElement:HTMLElement):void {
+
+  if (parentElement.style.opacity === "0") {
+    // Move child element above parent and center it on the page
+    childElement.style.position = "absolute";
+    childElement.style.backgroundColor = "green";
+    childElement.style.top = "50rem";
+    childElement.style.left = "50rem";
+    childElement.style.zIndex = "999"; // Ensures it appears above other elements
+    childElement.style.display = "block"; // Show the child even when parent is hidden
+  } else if (parentElement.style.opacity === "1") {
+    // Reset helper child to original position inside the parent
+    childElement.style.display = "none"; 
+  }
+}
 
 const displayBalance = (moneyIn: number, moneyOut: number): number => {
   balanceTotal = moneyOut + moneyIn;
@@ -260,6 +278,7 @@ function startLogoutCountdown(): void {
       // Perform logout actions here
       labelWelcome.textContent='Log in to get started';
       containerApp.style.opacity = '0';
+      moveIntroBox(containerApp, helperIntroBoxTXT);
       inputCloseUsername.value=" "; 
       inputClosePin.value=" ";
       console.log("Logged out due to inactivity.");
@@ -305,7 +324,7 @@ btnLogin.addEventListener('click', e => {
   inputLoginUsername.value = '';
   inputLoginPin.value = '';
   containerApp.style.opacity = '1';
-
+  moveIntroBox(containerApp, helperIntroBoxTXT);
   console.log('====================================');
   console.log(
     currantAccountFound.movements,
@@ -357,6 +376,7 @@ btnClose.addEventListener("click",(e)=>{
   if(inputCloseUsername.value.toLocaleLowerCase() === currantAccountFound.inicialize().toLocaleLowerCase() && +(inputClosePin.value as unknown) as number=== currantAccountFound.pin)
   labelWelcome.textContent='Log in to get started';
   containerApp.style.opacity = '0';
+  helperIntroBoxTXT.style.opacity="0";
   inputCloseUsername.value=" "; 
   inputClosePin.value=" ";
 });
@@ -367,3 +387,4 @@ movementsDisplayFn(currantAccountFound);
 })
 
 
+moveIntroBox(containerApp, helperIntroBoxTXT);

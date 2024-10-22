@@ -3,7 +3,7 @@ var account1 = {
     owner: 'Jonas Schmedtmann',
     // owner: 'JS',
     movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
-    interestRate: 1.2,
+    interestRate: 1.2, // %
     pin: 1111,
     inicialize: function () {
         var splitName = this.owner
@@ -71,6 +71,7 @@ var labelSumOut = document.querySelector('.summary__value--out');
 var labelSumInterest = document.querySelector('.summary__value--interest');
 var labelTimer = document.querySelector('.timer');
 var containerApp = document.querySelector('.app');
+var helperIntroBoxTXT = document.querySelector(".intro-box");
 var containerMovements = document.querySelector('.movements');
 var btnLogin = document.querySelector('.login__btn');
 var btnTransfer = document.querySelector('.form__btn--transfer');
@@ -102,6 +103,22 @@ var movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 // display functions
 var balanceTotal = 0;
 var countdownTimer;
+// Function to move child (intro-box) above the parent (app) when opacity is 0
+function moveIntroBox(parentElement, childElement) {
+    if (parentElement.style.opacity === "0") {
+        // Move child element above parent and center it on the page
+        childElement.style.position = "absolute";
+        childElement.style.backgroundColor = "green";
+        childElement.style.top = "50rem";
+        childElement.style.left = "50rem";
+        childElement.style.zIndex = "999"; // Ensures it appears above other elements
+        childElement.style.display = "block"; // Show the child even when parent is hidden
+    }
+    else if (parentElement.style.opacity === "1") {
+        // Reset helper child to original position inside the parent
+        childElement.style.display = "none";
+    }
+}
 var displayBalance = function (moneyIn, moneyOut) {
     balanceTotal = moneyOut + moneyIn;
     console.log('total', moneyOut + moneyIn);
@@ -189,6 +206,7 @@ function startLogoutCountdown() {
             // Perform logout actions here
             labelWelcome.textContent = 'Log in to get started';
             containerApp.style.opacity = '0';
+            moveIntroBox(containerApp, helperIntroBoxTXT);
             inputCloseUsername.value = " ";
             inputClosePin.value = " ";
             console.log("Logged out due to inactivity.");
@@ -229,6 +247,7 @@ btnLogin.addEventListener('click', function (e) {
     inputLoginUsername.value = '';
     inputLoginPin.value = '';
     containerApp.style.opacity = '1';
+    moveIntroBox(containerApp, helperIntroBoxTXT);
     console.log('====================================');
     console.log(currantAccountFound.movements, currantAccountFound.movements.sort(function (a, b) { return a - b; }));
     console.log('====================================');
@@ -271,6 +290,7 @@ btnClose.addEventListener("click", function (e) {
     if (inputCloseUsername.value.toLocaleLowerCase() === currantAccountFound.inicialize().toLocaleLowerCase() && +inputClosePin.value === currantAccountFound.pin)
         labelWelcome.textContent = 'Log in to get started';
     containerApp.style.opacity = '0';
+    helperIntroBoxTXT.style.opacity = "0";
     inputCloseUsername.value = " ";
     inputClosePin.value = " ";
 });
@@ -278,3 +298,4 @@ btnSort.addEventListener("click", function (e) {
     currantAccountFound.sorted = !currantAccountFound.sorted;
     movementsDisplayFn(currantAccountFound);
 });
+moveIntroBox(containerApp, helperIntroBoxTXT);

@@ -97,6 +97,70 @@ nav {
   opacity: 0;
   transition: all 1s;
 }
+/* Container for the intro box */
+.intro-box {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Logo section styling */
+
+
+/* Text styling */
+.intro-text h1 {
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.intro-text p {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+/* Guidance section styling */
+.guidance ul {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+.guidance ul li {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.guidance ul li em {
+  font-weight: bold;
+  color: #3498db;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .intro-box {
+    padding: 15px;
+  }
+
+  .intro-text h1 {
+    font-size: 1.4rem;
+  }
+
+  .intro-text p, .guidance ul li {
+    font-size: 0.85rem;
+  }
+}
 
 .balance {
   grid-column: 1 / span 2;
